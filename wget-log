@@ -1,0 +1,6 @@
+--2019-10-26 19:58:36--  https://developer.nrel.gov/api/hsds/?host=/nrel/wtk-us.h5
+Resolving developer.nrel.gov (developer.nrel.gov)... 35.173.149.1, 52.87.81.81
+Connecting to developer.nrel.gov (developer.nrel.gov)|35.173.149.1|:443... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+2019-10-26 19:58:36 ERROR 403: Forbidden.
+

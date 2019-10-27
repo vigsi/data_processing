@@ -1,0 +1,7 @@
+curl -v "https://developer.nrel.gov/api/hsds/?host=/nrel/nsrdb/nsrdb_2012.h5&api_key=CbBA0a5AgFNHgExKHbE1hq7yx3gbvctgmU7ed8sA" | json_pp
+
+curl -v "https://developer.nrel.gov/api/hsds/groups/g-ec5cba79-d2fae7be-64d4-32f15a-726f36?host=/nrel/nsrdb/nsrdb_2012.h5&api_key=CbBA0a5AgFNHgExKHbE1hq7yx3gbvctgmU7ed8sA" | json_pp
+
+curl -v "https://developer.nrel.gov/api/hsds/groups/g-ec5cba79-d2fae7be-64d4-32f15a-726f36/links?host=/nrel/nsrdb/nsrdb_2012.h5&api_key=CbBA0a5AgFNHgExKHbE1hq7yx3gbvctgmU7ed8sA" | json_pp
+
+curl "https://developer.nrel.gov/api/hsds/datasets/d-ec5cba79-d2fae7be-c9f4-7fe62f-99e44a?host=/nrel/nsrdb/nsrdb_2012.h5&api_key=CbBA0a5AgFNHgExKHbE1hq7yx3gbvctgmU7ed8sA" | json_pp
