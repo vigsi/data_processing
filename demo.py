@@ -50,7 +50,7 @@ def upload_measured(dset):
         GeoJson["points"].append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [coordinates[0], coordinates[1]]}, 'properties': {'ghi': ghi}})
 
         print(fileset)
-        time.sleep(3)
+        time.sleep(15)
 
 
 if __name__ == '__main__':
