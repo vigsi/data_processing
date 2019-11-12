@@ -1,4 +1,4 @@
-import h5pyd
+import h5py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +10,7 @@ from datetime import datetime
 import json
 import boto3
 import time
+from multiprocessing import Pool
 
 s3 = boto3.client('s3')
 
@@ -23,6 +24,7 @@ def generate_polygon(pair):
 
 def upload_measured(dset):
     fileset = set()
+    GeoJson = {}
     for idx in np.ndindex(dset.shape):
         timestamp = f["datetime"][idx[0]].decode('UTF-8')
         fileobj = datetime.strptime(timestamp, "%Y%m%d%H%M%S")
@@ -31,12 +33,13 @@ def upload_measured(dset):
 
         if filekey not in fileset:
             #Initialize GeoJson object
-            if len(fileset) > 0: 
-                s3.put_object(
-                        Bucket='vigsi-data-processed',
-                        Body=json.dumps(GeoJson),
-                        Key="{}-{}-{}/measured/{}-{}-{}T{}0000.000Z.json".format(GeoJson["year"], GeoJson["month"], GeoJson["day"], GeoJson["year"], GeoJson["month"], GeoJson["day"], GeoJson["hour"])
-                )
+            #if len(fileset) > 0: 
+                #s3.put_object(
+                #        Bucket='vigsi-data-processed',
+                #        Body=json.dumps(GeoJson),
+                #        Key="{}-{}-{}/measured/{}-{}-{}T{}0000.000Z.json".format(GeoJson["year"], GeoJson["month"], GeoJson["day"], GeoJson["year"], GeoJson["month"], GeoJson["day"], GeoJson["hour"])
+                #)
+            print(json.dumps(GeoJson, indent=4))
             GeoJson = {"points": [], "year": fileobj.strftime("%Y"), "month": fileobj.strftime("%m"), "day": fileobj.strftime("%d"), "hour": fileobj.strftime("%H")}
             
 
@@ -44,20 +47,17 @@ def upload_measured(dset):
         
 
 
-        coordinates = f["coordinates"][idx[1],idx[2]]
+        coordinates = [idx[1],idx[2]]
         ghi = dset[idx].item()
         
         GeoJson["points"].append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [coordinates[0], coordinates[1]]}, 'properties': {'ghi': ghi}})
-
-        print(fileset)
-        time.sleep(15)
 
 
 if __name__ == '__main__':
     # Open the desired year of nsrdb data
     # server endpoint, username, password is found via a config file
-    f = h5pyd.File("/nrel/wtk-us.h5", 'r')
-    print(list(f.attrs))  # list attributes belonging to the root group
+    f = h5py.File("/mnt/data/vigsi-data/2013-01.h5", 'r')
+    print(list(f.keys()))  # list attributes belonging to the root group
     dset = f['GHI']
 
     upload_measured(dset)

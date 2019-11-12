@@ -1,6 +1,7 @@
-h5pyd
+h5py
 pandas
 matplotlib
 scipy
 pyproj
 boto3
+geojson
