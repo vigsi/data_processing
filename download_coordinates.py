@@ -5,7 +5,7 @@ import numpy as np
 f = h5pyd.File("/nrel/wtk-us.h5", 'r')
 
 output = {}
-for  idx in np.ndindex(f['coordinates'].shape):
+for  idx in np.ndindex((900, f['coordinates'].shape[1])):
     key = str(idx[0]) + "," + str(idx[1])
     value = str(f['coordinates'][idx][0]) + "," + str(f['coordinates'][idx][0])
     

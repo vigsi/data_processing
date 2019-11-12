@@ -5,3 +5,5 @@ scipy
 pyproj
 boto3
 geojson
+Proj
+h5pyd

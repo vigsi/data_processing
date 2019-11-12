@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from pyproj import Proj
+from pyproj import Proj, transform
 import dateutil
 import geojson
 from datetime import datetime
@@ -13,6 +13,15 @@ import time
 from multiprocessing import Pool
 
 s3 = boto3.client('s3')
+
+def translate_location(pair):
+    inProj = Proj(proj='lcc', R=6371200, lat_1=30, lat_2=60, lat_0=38.47240422490422, lon_0=-96.0, x_0=0, y_0=0, ellps='sphere', units='m', no_defs=True)
+   
+    outProj = Proj(init='epsg:4326')
+
+    y1,x1 = pair[1],pair[0]
+    y2,x2 = transform(inProj,outProj,x1,y1)
+    return [y2,x2]
 
 def generate_polygon(pair):
     lon = pair[0]
@@ -47,11 +56,11 @@ def upload_measured(dset):
         
 
 
-        coordinates = [idx[1],idx[2]]
+        coordinates = translate_location((idx[1],idx[2]))
         ghi = dset[idx].item()
         
         GeoJson["points"].append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [coordinates[0], coordinates[1]]}, 'properties': {'ghi': ghi}})
-
+        print(idx)
 
 if __name__ == '__main__':
     # Open the desired year of nsrdb data
